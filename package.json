@@ -1,0 +1,13 @@
+{
+  "name": "ncku-course-schedule-export-bookmarklet",
+  "version": "1.0.0",
+  "description": "把成大課表直接匯出成 .ics，可匯入 Google 日曆、Apple 日曆、Outlook。",
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "esbuild": "^0.28.1"
+  }
+}
