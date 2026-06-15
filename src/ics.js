@@ -102,10 +102,11 @@ export function buildICS(blocks, startMonday, globalSkips, weekCounter) {
     lines.push('END:VEVENT');
   });
 
-  // Sunday week-number reminders. Week N's Sunday is the 7th day of that week.
+  // Sunday week-number reminders, placed on the Sunday right before that week's
+  // Monday (the day before, so the Sunday counts as the start of the same week).
   if (weekCounter && weekCounter.weeks > 0) {
     for (let w = 1; w <= weekCounter.weeks; w++) {
-      const sunday = addDays(startMonday, (w - 1) * 7 + 6);
+      const sunday = addDays(startMonday, (w - 1) * 7 - 1);
       lines.push('BEGIN:VEVENT');
       lines.push('UID:weekcounter-' + w + '@ncku');
       lines.push('DTSTAMP:' + stamp);
