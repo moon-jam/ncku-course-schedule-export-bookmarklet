@@ -1,5 +1,5 @@
 import { WEEK_LABEL, DEFAULT_WEEKS } from './periods.js';
-import { buildICS, parseISODate, parseDateList } from './ics.js';
+import { buildICS, parseISODate, parseDateList, snapToMonday } from './ics.js';
 
 export const DASH_ID = 'ncku-ics-dashboard';
 const STYLE_ID = 'ncku-ics-style';
@@ -93,6 +93,12 @@ function field(label, input) {
   return el('div', { 'class': 'nckuics-field' }, [el('label', { text: label }), input]);
 }
 
+// Format a Date as "YYYY-MM-DD" for a date input's value.
+function toISODate(date) {
+  const p = n => (n < 10 ? '0' : '') + n;
+  return date.getFullYear() + '-' + p(date.getMonth() + 1) + '-' + p(date.getDate());
+}
+
 function button(label, variant) {
   return el('button', { 'class': 'nckuics-btn ' + variant, text: label });
 }
@@ -154,6 +160,12 @@ export function buildDashboard(data, blocks) {
   const weekInputs = [];
 
   const startInput = el('input', { type: 'date' });
+  // Fool-proofing: if the picked date is not a Monday, snap it to the current week's Monday.
+  startInput.addEventListener('change', function () {
+    const d = parseISODate(startInput.value);
+    if (d) startInput.value = toISODate(snapToMonday(d));
+  });
+
   const weeksInput = el('input', { type: 'number', min: '1', max: '30', 'class': 'nckuics-num', value: '' + DEFAULT_WEEKS });
   const skipInput = el('textarea', {
     rows: '2', 'class': 'nckuics-area',
@@ -199,8 +211,9 @@ export function buildDashboard(data, blocks) {
   const copyBtn = button('複製 ICS 文字', 'ghost');
 
   function collect() {
-    const startMonday = parseISODate(startInput.value);
-    if (!startMonday) { alert('請先選擇開學日（第一週的週一）'); return null; }
+    const picked = parseISODate(startInput.value);
+    if (!picked) { alert('請先選擇開學日（第一週的週一）'); return null; }
+    const startMonday = snapToMonday(picked);
     const globalSkips = parseDateList(skipInput.value);
     const weekCounter = weekCounterCb.checked
       ? { weeks: parseInt(weeksInput.value, 10) || DEFAULT_WEEKS }

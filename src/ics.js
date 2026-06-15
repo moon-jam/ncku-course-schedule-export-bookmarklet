@@ -23,6 +23,13 @@ function addDays(date, n) {
   return d;
 }
 
+// Snap a date to the Monday of its week, fool-proofing the start-date picker.
+// Weeks start on Sunday, so Sunday maps to the next day's Monday and Mon..Sat
+// snap back to that week's Monday.
+export function snapToMonday(date) {
+  return addDays(date, 1 - date.getDay()); // getDay: 0 = Sunday .. 6 = Saturday
+}
+
 function fmtDate(date) {
   return '' + date.getFullYear() + pad(date.getMonth() + 1) + pad(date.getDate());
 }
