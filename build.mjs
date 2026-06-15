@@ -9,9 +9,11 @@ import { dirname, join } from 'path';
 
 const root = dirname(fileURLToPath(import.meta.url));
 const dist = join(root, 'dist');
+const ASSETS = 'assets';
 
 const HOST = 'https://ncku-course2ics.moon-jam.me';
 const DEMO_IMG = 'add-bookmarklet-demo.webp';
+const DEMO_VIDEO = 'export-schedule-demo.mp4';
 const CUSTOM_DOMAIN = 'ncku-course2ics.moon-jam.me';
 const REPO = 'https://github.com/moon-jam/ncku-course-schedule-export-bookmarklet';
 
@@ -55,6 +57,7 @@ h1{margin-bottom:6px}
 .lead{color:#555;margin-top:0}
 .bm{display:inline-block;background:#2e6da4;color:#fff;text-decoration:none;padding:12px 22px;border-radius:8px;font-weight:600;font-size:16px}
 .demo{display:block;max-width:100%;margin:18px 0 4px;border:1px solid #e2e2e2;border-radius:10px;box-shadow:0 6px 24px rgba(0,0,0,.12)}
+.demo-video{display:block;width:100%;margin:8px 0 4px;border:1px solid #e2e2e2;border-radius:10px;box-shadow:0 6px 24px rgba(0,0,0,.12)}
 .cap{color:#888;font-size:13px;margin:0 0 24px}
 ol{padding-left:20px}
 code{background:#f1f1ee;padding:2px 6px;border-radius:4px}
@@ -73,10 +76,11 @@ footer a:hover{text-decoration:underline}
 
 <p>把下面這顆按鈕拖曳到瀏覽器的書籤列：</p>
 <p><a class="bm" href="${bookmarklet.replace(/"/g, '&quot;')}">課表匯出 ICS</a></p>
-<img class="demo" src="${DEMO_IMG}" alt="把「課表匯出 ICS」按鈕拖曳到瀏覽器書籤列的示範">
+<img class="demo" src="${ASSETS}/${DEMO_IMG}" alt="把「課表匯出 ICS」按鈕拖曳到瀏覽器書籤列的示範">
 <p class="cap">↑ 拖曳示範：按住按鈕，拉到書籤列放開即可。</p>
 
-<h2>使用步驟</h2>
+<h2>使用教學</h2>
+<video class="demo-video" src="${ASSETS}/${DEMO_VIDEO}" controls muted loop playsinline preload="metadata"></video>
 <ol>
 <li>登入成大課程系統，開啟<a href="https://course.ncku.edu.tw/index.php?c=cos32315" target="_blank" rel="noopener">我的課表</a>頁面。</li>
 <li>點書籤列上的「課表匯出 ICS」。</li>
@@ -104,10 +108,13 @@ writeFileSync(join(dist, 'index.html'), indexHtml, 'utf8');
 // Custom domain for GitHub Pages.
 writeFileSync(join(dist, 'CNAME'), CUSTOM_DOMAIN + '\n', 'utf8');
 
-if (existsSync(join(root, DEMO_IMG))) {
-  copyFileSync(join(root, DEMO_IMG), join(dist, DEMO_IMG));
-} else {
-  console.warn('warning: ' + DEMO_IMG + ' not found; the landing page demo image will break');
+mkdirSync(join(dist, ASSETS), { recursive: true });
+for (const asset of [DEMO_IMG, DEMO_VIDEO]) {
+  if (existsSync(join(root, ASSETS, asset))) {
+    copyFileSync(join(root, ASSETS, asset), join(dist, ASSETS, asset));
+  } else {
+    console.warn('warning: ' + ASSETS + '/' + asset + ' not found; the landing page will be missing it');
+  }
 }
 
 const appSize = readFileSync(join(dist, 'app.js'), 'utf8').length;
