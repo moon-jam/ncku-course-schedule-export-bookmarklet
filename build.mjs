@@ -55,10 +55,11 @@ const indexHtml = `<!DOCTYPE html>
 body{font-family:system-ui,"Microsoft JhengHei",sans-serif;max-width:720px;margin:0 auto;padding:40px 16px;line-height:1.7;color:#222;background:#fff}
 h1{margin-bottom:6px}
 .lead{color:#555;margin-top:0}
+.note{color:#555;font-size:14px;background:#f3f7f3;border:1px solid #dce9dc;border-radius:8px;padding:10px 12px;margin:0 0 24px}
 .bm{display:inline-block;background:#2e6da4;color:#fff;text-decoration:none;padding:12px 22px;border-radius:8px;font-weight:600;font-size:16px}
 .demo{display:block;max-width:100%;margin:18px 0 4px;border:1px solid #e2e2e2;border-radius:10px;box-shadow:0 6px 24px rgba(0,0,0,.12)}
 .demo-video{display:block;width:100%;margin:8px 0 4px;border:1px solid #e2e2e2;border-radius:10px;box-shadow:0 6px 24px rgba(0,0,0,.12)}
-.cap{color:#888;font-size:13px;margin:0 0 24px}
+.cap{color:#888;font-size:13px;margin:0 0 8px}
 ol{padding-left:20px}
 code{background:#f1f1ee;padding:2px 6px;border-radius:4px}
 ul.feat{padding-left:20px;color:#444}
@@ -78,7 +79,8 @@ footer a:hover{text-decoration:underline}
 <p>把下面這顆按鈕拖曳到瀏覽器的書籤列：</p>
 <p><a class="bm" href="${bookmarklet.replace(/"/g, '&quot;')}">課表匯出 ICS</a></p>
 <img class="demo" src="${ASSETS}/${DEMO_IMG}" alt="把「課表匯出 ICS」按鈕拖曳到瀏覽器書籤列的示範">
-<p class="cap">↑ 拖曳示範：按住按鈕，拉到書籤列放開即可。</p>
+<p class="cap">↑ 拖曳示範：按住按鈕，拉到書籤列放開即可。（這是一個「<a href="https://zh.wikipedia.org/zh-tw/%E5%B0%8F%E4%B9%A6%E7%AD%BE" target="_blank" rel="noopener">書籤小程式（bookmarklet）</a>」，存到書籤列後，在課表頁點一下就會執行。）</p>
+<p class="note">所有處理都在你的瀏覽器本地完成，課表資料不會上傳到任何伺服器。</p>
 
 <h2>使用教學</h2>
 <video class="demo-video" src="${ASSETS}/${DEMO_VIDEO}" controls muted loop playsinline preload="metadata"></video>
